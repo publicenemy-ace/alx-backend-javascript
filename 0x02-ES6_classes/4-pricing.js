@@ -1,26 +1,62 @@
-export default class Currency {
-  constructor(code, name) {
-    this._code = code;
-    this._name = name;
+import Currency from './3-currency';
+
+export default class Pricing {
+  constructor(amount, currency) {
+    /* eslint-disable no-underscore-dangle */
+    this._amount = this._validateAmount(amount);
+    this._currency = this._validateCurrency(currency);
   }
 
-  get name() {
-    return this._name;
+  // private validation methods
+  /* eslint-disable class-methods-use-this */
+  // eslint-disable-next-line no-underscore-dangle
+  _validateAmount(amount) {
+    if (typeof amount !== 'number') {
+      throw new TypeError('Amount must be a Number');
+    }
+    return amount;
   }
 
-  set name(n) {
-    this._name = n;
+  /* eslint-disable class-methods-use-this */
+  // eslint-disable-next-line no-underscore-dangle
+  _validateCurrency(currency) {
+    if (!(currency instanceof Currency)) {
+      throw new TypeError('Currency must be an instance of Currency');
+    }
+    return currency;
   }
 
-  get code() {
-    return this._code;
+  // Getter and Setter for name
+  get amount() {
+    // eslint-disable-next-line no-underscore-dangle
+    return this._amount;
   }
 
-  set code(c) {
-    this._name = c;
+  set amount(amount) {
+    // eslint-disable-next-line no-underscore-dangle
+    this._amount = this._validateName(amount);
   }
 
-  displayFullCurrency() {
-    return `${this.name} (${this.code})`;
+  get currency() {
+    // eslint-disable-next-line no-underscore-dangle
+    return this._currency;
+  }
+
+  set currency(currency) {
+    // eslint-disable-next-line no-underscore-dangle
+    this._currency = this._validateCode(currency);
+  }
+
+  displayFullPrice() {
+    // eslint-disable-next-line no-underscore-dangle
+    return `${this._amount} ${this._currency.name} (${this._currency.code})`;
+  }
+
+  static convertPrice(amount, conversionRate) {
+    if (typeof amount !== 'number' || typeof conversionRate !== 'number') {
+      throw new TypeError('Both Amount and Conversion Rate must be a Number');
+    }
+
+    return amount * conversionRate;
   }
 }
